@@ -1,0 +1,21 @@
+﻿@{    
+    //WebSecurity.RequireAuthenticatedUser();
+
+    var db = Database.Open("Finances");
+    var q = "EXEC ";
+    var proc=Request.Params["procedure"];
+  
+    Server.ScriptTimeout=300;
+
+    q=q+proc+" ";
+    var i = 0;
+    i=Request.Params["ct"].AsInt();
+    var p = new string[i];
+    for(int j=0;j<i;j++){
+        q=q+"@"+j+", ";
+        p[j]=Request.Params["var"+j];
+    }
+    if(i>0){q=q.Substring(0,q.Length-2);}
+    var ret = db.QueryValue(q,p);
+    
+}@Html.Raw(ret)

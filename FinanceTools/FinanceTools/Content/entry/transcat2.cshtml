@@ -1,0 +1,243 @@
+﻿@{
+      Layout="~/Content/shared/_entry2Layout.cshtml";
+      int buttonCount=18;
+      int buttonPerRow=3;
+      var db = Database.Open("Finances");
+      var grpRs=db.Query("select distinct groupName from vSpendingCategories inner join spendingCategoryGroup on vSpendingCategories.groupid=spendingCategoryGroup.groupID where groupName in ('Expenses','Income','Savings','Investments') order by groupName");
+
+}
+<link type="text/css" rel="stylesheet" href="~/Content/transcat.css" />
+@section nav{
+
+    <ul class="nav navbar-nav navbar-right">
+        <li id="recordCount"></li>
+    </ul>
+
+}
+@section scripts{
+
+    <script type="text/javascript" src="/Scripts/finToolsScripts/catSelector.cshtml"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/split.js"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/sort.js"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/search.js"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/transtable2.js"></script>
+
+    <script type="text/javascript">
+        var numTopCat = 24;
+        var durTopCat = 365;
+
+        function init() {
+            $("#loadingDiv").toggle(true);
+            fetchData(renderTrans);
+            getButtons(renderButtons);
+            $('#sortDiv input').click(function () {
+                $('#buttonPanel').hide();
+                changeSort(this, renderTrans);
+                getButtons(renderButtons);
+            });
+            $("#searchPanel").click(function () {
+                $('.shiftedLeft').animate({ right: '-=250' }, 2000);
+                $('.shiftedRight').animate({ right: '+=250' }, 2000);
+                $('.shiftable').toggleClass('shiftedLeft');
+                $('.shiftable').toggleClass('shiftedRight');
+            });
+            $("#transactionsDiv").parent().height($(window).height() * 0.7);
+            $('.foldTrigger').click(foldHandler);
+            $('.foldable').find('.folds').hide();
+        }
+
+        $(document).ready(init);
+
+    </script>
+}
+
+<div class="row">
+    <div class="col-sm-4 ">
+        <div class="row "><div class="col-sm-12"><span class="h4">Quick Assign:</span></div></div>
+        <div class="row" id="quickAssignButtons">
+            @for(int i=0;i < buttonCount;i++){
+                <div class="catButton col-sm-4">
+                    <span class="catLabel" id="@("catLabel" + i.ToString())"></span>
+                </div>
+                @(i%buttonPerRow==buttonPerRow-1?Html.Raw("</div><div class='row dropTiny'>"):Html.Raw(""))
+            }
+        </div>
+        <hr />
+        <div class="row"><div class="col-sm-12"><span class="h4">Category Assignment:</span></div></div>
+        <div class="row" id="categoryAssignControls">
+            <div class="col-sm-9">
+                <span id="selectAnySpan">
+                    <select id="selectAny" class="form-control">
+                        <option id="optDefault" value="0">...</option>
+                        @foreach(var r in grpRs){
+                            <optgroup label="@r.groupname">
+                                @{
+                                    var catRs = db.Query("select vSpendingCategories.categoryid,case when len(vSpendingCategories.categoryName)>53 then left(vSpendingCategories.categoryName,50)+'...' else vSpendingCategories.categoryName end categoryName from vSpendingCategories inner join spendingCategoryGroup on vSpendingCategories.groupid=spendingCategoryGroup.groupID where groupName =@0 order by categoryName ",r.groupname);
+                                    foreach (var rr in catRs){
+                                    <option id="@rr.categoryName" value="@rr.categoryid">@rr.categoryName</option>
+                                }
+                            }
+                        </optgroup>}
+                    </select>
+                </span>
+            </div>
+
+
+            <div class="col-sm-3">
+                <input id="assignButton" class="btn btn-info btn-block" type="button" value="Assign" onclick="assign(this,-1);" />
+            </div>
+        </div>
+        <div class="row dropTiny">
+            <div class="col-sm-12" id="approveSpan">
+                <input id="approveButton" class="btn btn-success btn-block" type="button" value="Approve Categories" onclick="approve();" /><br />
+            </div>
+        </div>
+        <hr />
+        <div class="row"><div class="col-sm-12"><span class="h4">Payee Multi-Edit:</span></div></div>
+
+        <div class="row">
+            <div class="col-sm-9">
+                <input id="multiDescription" class="form-control" type="text"></input><br />
+            </div>
+            <div class="col-sm-3">
+                <input id="saveMultipleButton" class="btn btn-info btn-block" type="button" value="Save" onclick="saveMultiple();" /><br />
+            </div>
+        </div>
+        <hr />
+        <div class="row"><div class="col-sm-12"><span class="h4">sort:</span></div></div>
+        <div class="row">
+            <div id="sortDiv" class="col-sm-12 dropTiny">
+                <input type="button" id="sortDate" class="btn btn-primary sortButton " value="Date" />
+                <input type="button" id="sortDesc" class="asc btn btn-primary sortButton sortSelected" value="Payee" />
+                <input type="button" id="sortCat" class="btn btn-primary sortButton" value="Category" />
+                <input type="button" id="sortAmt" class="btn btn-primary sortButton" value="$" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-1"><span class="h4">filter:</span></div>
+            <div class="col-sm-11">
+                <select id="accountSearch" class="searchButton form-control">
+                    <option selected accountid="0">All Accounts</option>
+                    <option accountid="1">BA Checking</option>
+                    <option accountid="2">Chase Credit</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div id="searchDiv" class="col-sm-12 dropTiny">
+                <label for="searcher">search term:</label>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="searcher" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label><input type="checkbox" class="form-control" id="searchIncludeAll" >Include All</label>
+                    </div>
+                </div>
+                <input type="button" id="search" class="searchButton btn btn-info btn-block" value="Search" />
+                <input type="button" id="clearSearch" class="searchButton btn btn-warning btn-block" value="Clear Search" />
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-6 ">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="loadingDiv">Loading...</div>
+                <div id="noRecordsDiv">No Records Found.</div>
+                <div style="height: 650px">
+                    <div id="transactionsDiv" class="heightContained scrollable row">
+                        <div id="transactions" class="col-sm-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div id="splitPanel" style="display: none;" class="col-sm-12">
+                    <div id="splitPanelHeader" class=""><span class="h4">Split Transaction Detail</span></div>
+                    <div id="splitPanelBody" class="bordered">
+                        <table id="splitDetailTable">
+                            <thead>
+                            <tr id="splitDetailHeader">
+                                <th>Category:</th>
+                                <th>Amount</th>
+                                <th></th>
+                            </tr></thead>
+                        </table>
+                        <span class="splitPanelButton" onclick="addSplit();"><img alt="Add Split" src="~/Images/blueplus.png" class="tinyButton visible" />Add Split</span>
+                        <br />
+                        <span>Total Assigned: <span id="splitAssigned">$0.00</span> Transaction Total: <span id="splitTotal"></span></span>
+                        <br />
+                        <span id="splitRemaining">Remaining: <span>$0.00</span> </span>
+                    </div>
+                    <div id="splitPanelFooter" class="">
+                        <input id="splitLineCount" type="hidden" value="-1" />
+                        <input id="splitCancButton" class="splitPanelButton btn btn-danger" type="button" value="Cancel" onclick="$('#splitPanel').toggle(false);" />
+                        <input id="splitSaveButton" class="splitPanelButton btn btn-success" type="button" value="Save" onclick="saveSplit()" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <span id="selectedCount" class="h4"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <span class="btn btn-info" onclick="copyTran();">Copy Transaction</span>                    
+                    </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-info" onclick="pasteTran('payee');">Paste Payee</button>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2 rightPanel scrollable" >
+        <div class="row">
+            <div id="payeeInformation" class="col-sm-12 foldable">
+                <div class="row foldTrigger"><div class="col-sm-12"><span class="h4">Payee Mapping:</span></div></div>
+                <div class="row folds dropSmall"><div class="col-lg-5">Typical Mapping:</div><div class="text-right col-lg-7"><button id="typicalMap" class=" btn btn-success btn-xs" style="display: none;">&nbsp;</button></div></div>
+                <div class="row folds dropTiny"><div class="col-lg-5"># of Times Used:</div><div class="text-right col-lg-7"><button id="typicalMapObsCt" class=" btn btn-success btn-xs" style="display: none;">&nbsp;</button></div></div>
+                <div class="row folds dropSmall"><div class="col-lg-5"><input id="getMapping" onclick="getTypicalMapping()" type="button" class="btn btn-lg btn-info" value="Look up Mapping"></div><div class="col-lg-5"><input id="applyMapping" onclick="applyMapping();" type="button" class="btn btn-lg btn-info" value="Apply Mapping"></div></div>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="col-sm-12 foldable">
+                    <div class="row"><div class="col-sm-10"><hr/></div></div>
+                    <div class="row foldTrigger"><div class="col-sm-12 dropTiny"><span class="h4">Payee Stats:</span></div></div>        
+                    <div class="row folds"><div class="col-sm-12" id="payeeStats"></div></div>
+           
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 foldable">
+               <div class="row"><div class="col-sm-10"><hr/></div></div>
+                    <div class="row foldTrigger"><div class="col-sm-12 dropTiny"><span class="h4">Category Stats:</span></div></div>        
+                    <div class="row folds"><div class="col-sm-12 dropTiny " id="catStats"></div></div>
+                         <div class="row folds"><div class="col-sm-5 dropSmall">
+                    <button class="btn btn-info" id="lookupTagTransaction" onclick="getPayeeCatStats();">Lookup Stats for Payee</button>
+                    </div></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 foldable">
+                <div class="row"><div class="col-sm-10"><hr/></div></div>
+                <div class="row foldTrigger"><div class="col-lg-12 dropTiny"><span class="h4">Tag Cloud:</span></div></div>
+                <div class="row folds"><div class="col-lg-10 dropTiny tagCloud " id="tagCloudTransaction"></div></div>
+                <div class="row folds"><div class="col-lg-10 dropTiny tagCloud " id="tagCloudAll"></div></div>
+                <div class="row folds">
+                    <div class="col-lg-5">
+                        <button class="btn btn-info" id="lookupTagTransaction" onclick="getTags('transaction');">Lookup Tags for Payee</button>
+                    </div>
+                    <div class="col-lg-5">
+                        <button class="btn btn-info" id="lookupTagAll" onclick="getTags('all');">Show All Tags</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,394 @@
+﻿
+@{
+    Layout = "~/Content/shared/_SiteLayout.cshtml";
+    Page.Title = "Financial Dashboard";
+
+    var ds = Database.Open("Finances");
+
+    var domainQuery = "exec reporting.getDomainFieldsForChart";
+    var rsDomain = ds.Query(domainQuery);
+
+    var filterQuery = "exec reporting.getDomainFilterFieldsForChart";
+    var rsFilter = ds.Query (filterQuery);
+
+    var operatorQuery = "exec reporting.getDomainFilterOperators";
+    var rsOperator=ds.Query(operatorQuery);
+
+    var timeFilterQuery = "exec reporting.getTimeFilterFieldsForChart";
+    var rsTimeFilter = ds.Query(timeFilterQuery);
+
+    var domain = rsDomain.Select(x=>new SelectListItem{Value=x.domainId.ToString(),Text=x.domainName });
+    var domainDataTypes = rsDomain.Select(x=>new SelectListItem{Value=x.domainName,Text=x.dataType});
+
+    var selectedDomain = new List<SelectListItem>{new SelectListItem{Value="0",Text=""}};
+
+    var filter=rsFilter.Select(x=>new SelectListItem{Value=x.domainId.ToString(), Text=x.domainName});
+    var filterOperator=rsOperator.Select(x=>new SelectListItem{Value=x.value.ToString(), Text=x.text});
+
+    var timeFilter = rsTimeFilter.Select(x=>new SelectListItem{Value=x.value,Text=x.text});
+
+    var listMetricUnits = new List<SelectListItem>{};
+
+    listMetricUnits.Add(new SelectListItem{Value="dollar",Text="$"});
+    listMetricUnits.Add(new SelectListItem{Value="percentage",Text="%"});    
+    listMetricUnits.Add(new SelectListItem{Value="totpercentage",Text="% of Total"});    
+
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="Scripts/finToolsScripts/gChart.js"></script>
+<script type="text/javascript">
+       var dataType = {}
+    
+    @foreach(SelectListItem li in domainDataTypes){
+       if (li.Text!=null){
+           @: dataType.@li.Value.Replace(" ","") = '@li.Text';
+       }
+    }     
+</script>
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var debug = 1;
+    var filterHistory = [];
+
+    if (debug == 1) { console.log(dataType); }
+    var gReturn;
+    var swich = 0;
+    //var params = '{"domainFields":[{"field":"Actdate","alias":"YearMo"},{"field":"7","alias":"payee"},{"field":"33","alias":"cat"}],"domainFilters":[{"Field":"7","Operator":"LK","FilterValue":"%Nash% V%"},{"field":"6","operator":"EQ","filtervalue":"1"}]}';
+    //var params = '{"domainFields":[{"field":"7","alias":"payee"},{"field":"33","alias":"Category"}],"domainFilters":[{"Field":"7","Operator":"LK","FilterValue":"%Nash% V%"},{"field":"6","operator":"EQ","filtervalue":"1"}]}';
+    //var params = '{"domainFields":[{"field":"7","alias":"payee"},{"field":"33","alias":"Category"}],"domainFilters":[{"field":"6","operator":"EQ","filtervalue":"1"}],"timeFilter":"YTD"}';
+    var params = [[], [], []];
+    // params[0] = '{"domainFields":[{"field":"33","alias":"Category"}],"domainFilters":[{"field":"6","operator":"EQ","filtervalue":"1"}],"timeFilter":"YTD"}';
+    // params[1] = '{"domainFields":[{"field":"33","alias":"Category"}],"domainFilters":[{"field":"6","operator":"EQ","filtervalue":"1"}],"timeFilter":"LYR"}';
+    var dTypes;
+    var filters = [];
+
+    function addDomainField(domainFields, id, alias) {
+        var domainFields = domainFields === undefined ? [] : domainFields;
+        var newField = {};
+        newField.field = id;
+        newField.alias = alias;
+        domainFields.push(newField);
+        return domainFields;
+    }
+
+    function getMetrics() {
+        metrics = [];
+
+        exp = $("#includeExpenses").attr("checked") == "checked";
+        inc = $("#includeIncome").attr("checked") == "checked";
+        unit = $("#metricUnits option:selected").val();
+
+        ename = '';
+        iname = '';
+        switch (unit) {
+            case "dollar":
+                ename = 'expenses';
+                iname = 'income';
+                break;
+            case "percentage":
+                ename = 'pctExpense';
+                iname = 'pctIncome';
+                break;
+            case "totpercentage":
+                ename = 'pctTotalExpense';
+                iname = 'pctTotalIncome';
+                break;
+        }
+
+        if (exp) { metrics.push(ename); }
+        if (inc) { metrics.push(iname); }
+
+        return metrics;
+
+    }
+
+    function setParams() {
+        params = [[], [], []];
+        var param = {};
+        var df = [];
+        var metrics = getMetrics();
+
+        $("#mySelectedDomains").children().each(function (i, e) { df = addDomainField(df, $(e).attr('value'), $(e).text()); });
+        if (df.length == 0) { return; }
+
+        param.domainFields = df;
+        if (filters.length > 0) { param.domainFilters = filters; }
+
+        jsrc = $("#myTimeFilters option:selected").val();
+        if (jsrc != 'ALL') {
+            param.timeFilter = jsrc;
+        }
+
+        params[0].push(JSON.stringify(param));
+        params[1].push(dataType);
+        params[2].push(metrics);
+    }
+
+    function fireChartAPI() {
+        setParams();
+        if (params[0].length == 0) { return; }
+        if (debug == 1) { console.log(params); }
+        $.post("/Content/shared/dataRetrieveJSON.cshtml",
+                                 { "procedure": "reporting.getData",
+                                     "var0": params[0][params[0].length - 1],
+                                     "var1": 'JSON',
+                                     "var2": 'metrics',
+                                     "ct": 3
+                                 },
+                             function (data) {
+                                 //            callback(data);
+                                 gReturn = $.parseJSON(data);
+                                 outsideCall($("#chartType").val(), gReturn['resultSet'], $.parseJSON(params[0][params[0].length - 1]), params[1][params[1].length - 1], params[2][params[2].length - 1], ['chart', 'groupedTable']);
+                                 //bit of a hack - callback of data pull 1 launches data pull 2
+                                 tmout = window.setTimeout(function () {
+                                     $.post("/Content/shared/dataRetrieveJSON.cshtml",
+                                     { "procedure": "reporting.getData",
+                                         "var0": params[0][params[0].length - 1],
+                                         "var1": 'JSON',
+                                         "var2": 'transactions',
+                                         "ct": 3
+                                     },
+                                    function (data) {
+                                        //            callback(data);
+                                        gReturn = $.parseJSON(data);
+                                        outsideCall($("#chartType").val(), gReturn['resultSet'], $.parseJSON(params[0][params[0].length - 1]), params[1][params[1].length - 1], params[2][params[2].length - 1], ['transTable']);
+                                        window.clearTimeout(tmout);
+                                    });
+                                     $('#table_div_trans td').click(function () { alert('click!'); });
+
+                                 }, 500);
+
+                             });
+
+    }
+
+    function addListItem(src, dest, recurse, returnAfterId, additionalText) {
+        jsrc = $(src + ' option:selected');
+        jNeighbor = jsrc.prev();
+        val = jsrc.val();
+        pVal = jNeighbor.val();
+        oText = jsrc.attr('originalText');
+        txt = oText == undefined ? jsrc.text() : oText;
+        oText = txt;
+        additionalText = additionalText == undefined ? [] : additionalText;
+        for (i = 0; i < additionalText.length; i++) {
+            atSrc = $(additionalText[i]);
+            txt += ' ' + (atSrc.text() == "" ? atSrc.val() : atSrc.text());
+        }
+
+        var opt = '<option value=' + val + ' selected loadedfrom="' + src + '" loadedafter="' + pVal + '" originalText="' + oText + '">' + txt + '</option>';
+        if (returnAfterId === undefined) {
+            $(dest).append(opt);
+        } else {
+            if (returnAfterId == -1) { $(dest).prepend(opt); }
+            else {
+                targ = $(dest + ' option[value="' + returnAfterId + '"]')
+                targ.after(opt);
+            }
+        }
+        if (recurse) { removeListItem(src, false); }
+
+        $(dest).change();
+    }
+
+    function removeListItem(targ, recurse) {
+
+        jtarg = $(targ + ' option:selected');
+        returnTo = jtarg.attr('loadedfrom');
+        returnPos = jtarg.attr('loadedafter') == 'undefined' ? -1 : Number(jtarg.attr('loadedafter'));
+
+        if (recurse) { addListItem(targ, returnTo, false, returnPos); }
+        jtarg.remove();
+
+    }
+
+    function addFilter(fld, op, val) {
+        filter = {};
+        filter.field = $(fld + ' option:selected').val();
+        filter.operator = $(op + ' option:selected').val();
+        filter.filtervalue = $(val).val();
+        if (filter.operator == 'IN') {  //need to ensure that in operator will have correct syntax
+            filter.filtervalue = filter.filtervalue.substr(0, 1) == "(" ? filter.filtervalue.replace("(", "('") : "('" + filter.filtervalue.replace(',', "','") + (filter.filtervalue.substr(-1, 1) == ")" ? filter.filtervalue.replace(")", "')") : "')");
+        }
+
+        filters.push(filter);
+        if (debug == 1) { console.log(filters); }
+
+    }
+
+    function removeFilter(src) {
+        var targetFieldId = $(src + ' option:selected').val();
+        var targets = [];
+
+        for (var i = 0; i < filters.length; i++) {
+            if (filters[i].field == targetFieldId) {
+                targets.push(i);
+            }
+        }
+
+        for (var j = 0; j < targets.length; j++) {
+            filters.splice(targets[j], 1);
+        }
+
+        if (debug == 1) { console.log(filters); }
+
+
+    }
+
+
+    function reorder(listId, direction, optionvalue) {
+        list = $(listId);
+        option = list.find('option[value="' + (optionvalue === undefined ? list.val() : optionvalue) + '"]');
+
+        if (direction > 0) {
+            if (list.find('option:first-child') != option) { option.prev('option').before(option); }
+        }
+        if (direction < 0) {
+            if (list.find('option:last-child') != option) { option.next('option').after(option); }
+        }
+    }
+
+    function queryFilterHistory() {
+        srcObj = $("#myDomainFilters");
+        entity = srcObj.val();
+        op = '';
+        val = '';
+
+        for (i = 0; i < filterHistory.length; i++) {
+            if (filterHistory[i].entity == entity) {
+                op = filterHistory[i].operator;
+                val = filterHistory[i].values;
+            }
+        }
+
+        $("#myFilterOperators").val(op);
+        $("#myFilterValue").val(val);
+
+    }
+
+    function recordFilterHistory() {
+        lst = $('#mySelectedDomainFilters');
+        opt = $('#mySelectedDomainFilters option:selected');
+        entity = opt.val();
+        op = $('#myFilterOperators option:selected').val();
+        val = $('#myFilterValue').val();
+
+        for (i = 0; i < filterHistory.length; i++) {
+            if (filterHistory[i].entity == entity) {
+                filterHistory.splice(i, 1);
+            }
+        }
+
+        hxObj = {};
+        hxObj.entity = entity;
+        hxObj.operator = op;
+        hxObj.values = val;
+
+        filterHistory.push(hxObj);
+    }
+
+    function clearFilterFields() {
+        $("#myFilterOperators").val('EQ');
+        $("#myFilterValue").val('');
+    }
+
+    function defaultFilters() {
+
+        filterHistory.push({ entity: 27, operator: "EQ", values: new Date().getFullYear() });
+        filterHistory.push({ entity: 6, operator: "EQ", values: 1 });
+
+    }
+
+    $(document).ready(function () {
+        $('#mySelectedDomainFilters').change(function () { recordFilterHistory(); });
+        $('#myDomainFilters').change(function () { queryFilterHistory(); });
+        defaultFilters();
+
+    });
+
+
+</script>
+
+<div id="control_div" style="float:left;width: 20%;">
+
+    <!--Chart Type Drop Down-->
+    <div id="chartType_div">
+        <span id="gridLabel">Chart Type:</span><br />
+        <select id="chartType">
+            <!--<option id="BarChartOption" value="BarChart">Bar Chart</option>-->
+            <option id="ColumnChartOption" value="ColumnChart">Column Chart</option>
+            <!--<option id="PieChartOption" value="PieChart">Pie Chart</option>-->
+            <option id="LineChartOption" value="LineChart">Line Chart</option>
+        </select><br />
+    </div>
+
+    <!--Domain Selectors-->
+    <div id="manage_domain_div" style="margin-top: 20px">
+        <span id="gridLabel">Domains: </span><br />
+        <div style="float: left">@Html.ListBox("mySelectedDomains",null,new{size=4,style="width:200px"})</div>
+        <div><button id="upDomain" class="dashboardbutton small" onclick="reorder('#mySelectedDomains',1);">Move Up</button><br />
+            <button id="downDomain" class="dashboardbutton small" onclick="reorder('#mySelectedDomains',-1);">Move Down</button>
+        </div>
+    </div>
+    <div id="select_domain_div" style="clear: both">
+        @Html.DropDownList("myDomains",domain)<br />
+        <button id="addDomain" class="dashboardbutton small" onclick="addListItem('#myDomains','#mySelectedDomains',true)">Add</button>
+        <button id="removeDomain" class="dashboardbutton small" onclick="removeListItem('#mySelectedDomains',true)">Remove</button>
+    </div>
+
+
+    <!--Time Filter Selectors-->
+    <div id="time_filter_div" style="margin-top:20px">
+        Timeframe: @Html.DropDownList("myTimeFilters",timeFilter)
+    </div>    <!--Domain Filter Selectors-->
+    <div id="manage_domain_filter_div" style="margin-top: 20px">
+        <span id="gridLabel">Other Filters: </span><br />
+        @Html.ListBox("mySelectedDomainFilters",null,new{size=4,style="width:200px"})<br />
+    </div>
+    <div id="domain_filter_div">
+        @Html.DropDownList("myDomainFilters",filter)
+        @Html.DropDownList("myFilterOperators",filterOperator)<br />
+        @Html.TextBox("myFilterValue","",new{style="width:200px;font-size:0.8em"})<br />
+        <button id="addFilter" class="dashboardbutton small" onclick="addFilter('#myDomainFilters','#myFilterOperators','#myFilterValue'); addListItem('#myDomainFilters','#mySelectedDomainFilters',true,undefined,['#myFilterOperators option:selected','#myFilterValue']); clearFilterFields();">Add</button>
+        <button id="removeFilter" class="dashboardbutton small" onclick="removeFilter('#mySelectedDomainFilters');removeListItem('#mySelectedDomainFilters',true)">Remove</button>
+    </div>
+
+    <!--Metric Selectors-->
+    <div id="metric_div" style="margin-top: 20px">
+        Metrics:<br />
+        <div style="float:left;margin-top: 5px "><span>@Html.CheckBox("includeExpenses",false) Expenses</span><br />
+            @Html.CheckBox("includeIncome",false) Income<br /></div>
+        <div style="padding-left: 15px;padding-top: 15px"><span style="margin-left: 30px">Unit: @Html.DropDownList("metricUnits",listMetricUnits)</span></div>
+    </div>
+    <div id="show_chart_div" style="margin-top: 20px;clear: both">
+        <button id="show_chart_button" class="dashboardbutton" value="Show Chart" onclick="fireChartAPI();">Show Chart</button>
+    </div>
+</div>
+<div id="googleHolder" style="width: 78%;margin-left: 21%">
+ Results:
+    <div id="chart_div"></div>
+    <div id="table_div_grouped" style="margin-top:15px;"></div>
+    <div id="table_div_trans" style="margin-top: 15px"></div>
+</div>
+
+<div id="debug_div">
+</div>

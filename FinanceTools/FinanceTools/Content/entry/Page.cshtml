@@ -1,0 +1,27 @@
+﻿@{
+      Layout="~/Content/shared/_entryLayout.cshtml";
+      }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: 'POST',
+            url: "/Content/shared/dataRetrieveJSON.cshtml",
+
+            data: { "procedure": "uncategorizedTransactionsJSON",
+                "var0": 0,
+                "var1": "accountingDate",
+                "var2": "desc",
+                "ct": 3
+            },
+            dataType: "text",
+            success: function (retData) {
+                $('#div').text(retData);
+            }, err: function (j, t, e) {
+                $('#div').text(t);
+            }
+        });
+    });
+</script>
+
+<div id="div"></div>

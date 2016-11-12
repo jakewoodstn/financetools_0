@@ -1,0 +1,43 @@
+﻿@{
+    Layout="~/Content/shared/_SiteLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <div id="mytarg"></div>
+    
+<script type="text/javascript">
+    var num = 24;
+    var dur = 180;
+    $(document).ready(
+        function () {
+            $.ajax(
+                {
+                    url: '/Content/shared/dataRetrieveJSON.cshtml',
+                    type: 'post',
+                    dataType: 'json',
+                    data: { "procedure": "topCatJSON",
+                        "var0": 0,
+                        "var1": num,
+                        "var2": dur,
+                        "var3": 'incidence',
+                        "ct": 4
+                    },
+                    success: function (json) {
+                        $('#mytarg').html(json);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $('#mytarg').html(XMLHttpRequest.responseText);
+                    }
+                });
+        });
+
+</script>
+</body>
+</html>

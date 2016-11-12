@@ -1,0 +1,360 @@
+﻿@functions{
+    DateTime LastDayOfMonth(DateTime dat){
+        DateTime ret =new DateTime(dat.Year,dat.Month,1).AddMonths(1).AddDays(-1);      
+        return ret;
+    }
+    DateTime FirstDayOfMonth(DateTime dat){
+        DateTime ret = new DateTime(dat.Year, dat.Month,1);
+        return ret;
+    }
+}
+
+@{
+    Layout = "~/Content/shared/_SiteLayout.cshtml";
+    Page.Title = "Financial Dashboard";
+
+    var nm = new string[10];
+    nm[0]="mtd";
+    nm[1]="lastmo";
+    nm[2]="last30";
+    nm[3]="last60";
+    nm[4]="last90";
+    nm[5]="last6mo";
+    nm[6]="ytd";
+    nm[7]="lastyr";
+    nm[8]="last12Mo";
+    nm[9]="all";
+    var dat = new DateTime[2,10];
+
+    dat[0,0]=FirstDayOfMonth(DateTime.Today);
+    dat[1,0]=DateTime.Today;
+
+    dat[0,1]=FirstDayOfMonth(DateTime.Today.AddMonths(-1));
+    dat[1,1]=LastDayOfMonth(dat[0,1]);
+
+    dat[0,2]=DateTime.Today.AddDays(-30);
+    dat[1,2]=DateTime.Today;
+
+    dat[0,3]=DateTime.Today.AddDays(-60);
+    dat[1,3]=DateTime.Today;
+
+    dat[0,4]=DateTime.Today.AddDays(-90);
+    dat[1,4]=DateTime.Today;
+
+    dat[0,5]=DateTime.Today.AddMonths(-6);
+    dat[1,5]=DateTime.Today;
+
+    dat[0,6]=new DateTime(DateTime.Today.Year,1,1);
+    dat[1,6]=DateTime.Today;
+
+    dat[0,7]=new DateTime(DateTime.Today.Year-1,1,1);
+    dat[1,7]=new DateTime(DateTime.Today.Year-1,12,31);
+
+    dat[0,8]=DateTime.Today.AddMonths(-12);
+    dat[1,8]=DateTime.Today;
+
+    string s = "1/1/1900";
+
+    dat[0,9]=s.AsDateTime();
+    dat[1,9]=DateTime.Today;
+
+    var tit=new string[10];
+    var titbase="Spending ";
+     tit[0] = titbase+"This Month (to date)";
+     tit[1] = titbase+"Last Month";
+     tit[2] = titbase+"Last 30 Days";
+     tit[3] = titbase+"Last 60 Days";
+     tit[4] = titbase+"Last 90 Days";
+     tit[5] = titbase+"Last 6 Months";
+     tit[6] = titbase+"This Year (to date)";   
+     tit[7] = titbase+"Last Year";
+     tit[8] = titbase+"Last 12 Months";
+     tit[9] = titbase+"All Time";
+    var targ = new string[2];
+
+    targ[0]="container1";
+    targ[1]="container2";
+
+    var adhoctarg = "container5";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Content/flexigrid.css" />
+}
+
+@section scripts{
+    <script src="~/Scripts/finToolsScripts/chart.js"></script>
+    <script type="text/javascript">
+
+        
+        function pieRefresh(targ,option){
+        
+            acct=parseInt($('#accountSearch option:selected').attr('accountId'));
+
+            data={
+                mtd:['@dat[0,0]','@dat[1,0]','@tit[0]'],
+                lastmo:['@dat[0,1]','@dat[1,1]','@tit[1]'],        
+                last30:['@dat[0,2]','@dat[1,2]','@tit[2]'],        
+                last60:['@dat[0,3]','@dat[1,3]','@tit[3]'],        
+                last90:['@dat[0,4]','@dat[1,4]','@tit[4]'],        
+                last6mo:['@dat[0,5]','@dat[1,5]','@tit[5]'],        
+                ytd:['@dat[0,6]','@dat[1,6]','@tit[6]'],
+                lastyr:['@dat[0,7]','@dat[1,7]','@tit[7]'],        
+                last12mo:['@dat[0,8]','@dat[1,8]','@tit[8]'],
+                all:['@dat[0,9]','@dat[1,9]','@tit[9]']
+
+            };
+        
+            renderCat(data[option][2],data[option][0],data[option][1],targ,acct);
+        
+        }
+        renderCat('@Html.Raw(tit[0])',"@dat[0,0].ToShortDateString()","@dat[1,0].ToShortDateString()",'@Html.Raw(targ[0])',0);
+        renderCat('@Html.Raw(tit[1])',"@dat[0,1].ToShortDateString()","@dat[1,1].ToShortDateString()",'@Html.Raw(targ[1])',0);
+        
+    </script>
+}
+
+
+<span id="categorySectionLabel" onclick="$('#categorySection').slideToggle('fast');">Category Breakdowns:</span>
+<br/>
+        <select id="accountSearch" class="searchButton">
+    <option selected accountId="0">All Accounts</option>
+    <option accountId="1">BA Checking</option>
+    <option accountId="2">Chase Credit</option>
+    </select>
+
+<div class="plotSection" id="categorySection">
+    <script type="text/javascript">
+        $(document).ready(
+        function () {
+            $('#leftlist li').each(
+                function () {
+                    $(this).click(
+                        function () {
+                           if(!$(this).hasClass('selected')){
+                               var targ='@Html.Raw(targ[0])';
+                               $('#leftlist li').each(
+                               function () {
+                                    $(this).removeClass();
+                                    $(this).addClass('unselected');
+                                });
+                               $(this).removeClass('unselected');
+                               $(this).addClass('selected');
+                               pieRefresh(targ,this.attributes.chart.value);
+                           }
+                        });
+                    $(this).mouseover(
+                        function () {
+                            if (!$(this).hasClass('selected')) {
+                                $(this).removeClass('unselected');
+                                $(this).addClass('moused');
+                            }
+                        }
+                    );
+                    $(this).mouseout(
+                        function () {
+                            if (!$(this).hasClass('selected')) {
+                                $(this).removeClass('moused');
+                                $(this).addClass('unselected');
+                            }
+                        }
+                    );
+                });
+        });
+        $(document).ready(
+        function () {
+            $('#rightlist li').each(
+                function (i, e) {
+                    $(this).click(
+                        function () {
+                           if(!$(this).hasClass('selected')){
+                            var targ='@Html.Raw(targ[1])';                    
+                            $('#rightlist li').each(
+                            function () {
+                                $(this).removeClass();
+                                $(this).addClass('unselected');
+                            });
+                            $(this).removeClass('unselected');
+                            $(this).addClass('selected');
+                            pieRefresh(targ,this.attributes.chart.value);
+                           }
+                        });
+                    $(this).mouseover(
+                        function () {
+                            if (!$(this).hasClass('selected')) {
+                                $(this).removeClass('unselected');
+                                $(this).addClass('moused');
+                            }
+                        }
+                    );
+                    $(this).mouseout(
+                        function () {
+                            if (!$(this).hasClass('selected')) {
+                                $(this).removeClass('moused');
+                                $(this).addClass('unselected');
+                            }
+                        }
+                    );
+        
+                });
+        });
+    </script>
+    <table>
+        <tr>
+            <td style="min-width: 100px">
+                <ul class="pieController" id="leftlist">
+                    <li class="selected" chart="mtd">MTD</li>
+                    <li chart="lastmo">Last Month</li>
+                    <li chart="last30">Last 30 </li>
+                    <li chart="last60">Last 60 </li>
+                    <li chart="last90">Last 90 </li>
+                    <li chart="last6mo">Last 6Mo </li>
+                    <li chart="ytd">YTD</li>
+                    <li chart="lastyr">Last Year</li>
+                    <li chart="last12mo">Last 12Mo</li>
+                    <li chart="all">All Time</li>
+                
+                </ul>
+            </td>
+            <td>
+                <div id="@targ[0]" style="max-width: 380px;width: 380px">
+                </div>
+            </td>
+            <td>
+                <div id="@targ[1]" style="max-width: 380px;width: 380px">
+                </div>
+            </td>
+            <td style="min-width: 100px">
+                <ul class="pieController" id="rightlist">
+                    <li chart="mtd">MTD</li>
+                    <li class="selected" chart="lastmo">Last Month</li>
+                    <li chart="last30">Last 30 </li>
+                    <li chart="last60">Last 60 </li>
+                    <li chart="last90">Last 90 </li>
+                    <li chart="last6mo">Last 6Mo </li>
+                    <li chart="ytd">YTD</li>
+                    <li chart="lastyr">Last Year</li>
+                    <li chart="last12mo">Last 12Mo</li>
+                    <li chart="all">All Time</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div class="line"></div>
+<span id="gridLabel" onclick="$('#detailGrid').slideToggle('fast');">Category Details:</span>
+
+<div id="detailGrid">
+    <table id="grids">
+        <tr>
+            <td><table id="flexCat" style="display:none"></table></td>
+            <td><table id="flexPay" style="display:none"></table></td>
+        </tr>
+        <tr>
+            <td colspan="2"><table id="flexTrans" style="display:none"></table></td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(
+             function () {
+                 $("#flexTrans").flexigrid
+                      ({
+                          url: 'Content/shared/dataRetrieveJSON.cshtml',
+                          dataType: 'json',
+                          colModel: [
+                              { display: 'Date', name: 'accountingDate', width: 100, sortable: true, align: 'center' },
+                              { display: 'Category', name: 'category', width: 180, sortable: true, align: 'center' },
+                              { display: 'Payee', name: 'desc', width: 520, sortable: true, align: 'center' },
+                              { display: 'Amount', name: 'amount', width: 100, sortable: true, align: 'center' }
+                          ],
+                          params: [
+                              { name: 'procedure', value: 'rCatDetailJSON' },
+                              { name: 'var0', value: '1/1/2013' },
+                              { name: 'var1', value: '12/31/2013' },
+                              { name: 'var2', value: '' },
+                              { name: 'var3', value: 'category' },
+                              { name: 'var4', value: 2 },
+                              { name: 'ct', value: 5 }
+                             ],
+                          usepager: false,
+                          useRp: false,
+                          width: 965,
+                          height: 255,
+                          singleSelect: true
+    
+                      });
+    
+             });
+    $(document).ready(
+                 function () {
+                     $("#flexCat").flexigrid
+                      ({
+                          url: 'Content/shared/dataRetrieveJSON.cshtml',
+                          dataType: 'json',
+                          colModel: [
+                              { display: 'Category', name: 'category', width: 320, sortable: true, align: 'center' },
+                              { display: 'Amount', name: 'amount', width: 100, sortable: true, align: 'center' }
+                          ],
+                          params: [
+                              { name: 'procedure', value: 'rCatSummaryJSON' },
+                              { name: 'var0', value: '1/1/2013' },
+                              { name: 'var1', value: '12/31/2013' },
+                              { name: 'var2', value: '' },
+                              { name: 'var3', value: 'category' },
+                              { name: 'var4', value: 'category' },
+                              { name: 'ct', value: 5 }
+                            ],
+                          usepager: false,
+                          useRp: false,
+                          width: 450,
+                          height: 255,
+                          singleSelect: true
+    
+                      });
+                     $("#flexCat").click(function (event) {
+                         $('.trSelected', this).each(function () {
+                             filterGrids($('td[abbr="category"] >div', this).text(), null)
+                         });                    
+                         if ($('.trSelected', this).length == 0) { returnData(null, null, null); }
+    
+                     });
+    
+                 });
+    
+    $(document).ready(
+        function () {
+            $("#flexPay").flexigrid
+                      ({
+                          url: 'Content/shared/dataRetrieveJSON.cshtml',
+                          dataType: 'json',
+                          colModel: [
+                              { display: 'Payee', name: 'payee', width: 320, sortable: true, align: 'center' },
+                              { display: 'Amount', name: 'amount', width: 100, sortable: true, align: 'center' }
+                          ],
+                          params: [
+                              { name: 'procedure', value: 'rCatSummaryJSON' },
+                              { name: 'var0', value: '1/1/2013' },
+                              { name: 'var1', value: '12/31/2013' },
+                              { name: 'var2', value: '' },
+                              { name: 'var3', value: 'payee' },
+                              { name: 'var4', value: 'category' },
+                              { name: 'ct', value: 5 }
+                            ],
+                          usepager: false,
+                          useRp: false,
+                          width: 450,
+                          height: 255,
+                          singleSelect: true
+                      });
+    
+            $("#flexPay").click(function (event) {
+                $('.trSelected', this).each(function () {
+                    filterGrids(null, $('td[abbr="payee"] >div', this).text())
+                });
+    
+                if ($('.trSelected', this).length == 0) { returnData(null, null, null); }
+            });
+        });
+</script>

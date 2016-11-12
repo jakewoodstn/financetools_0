@@ -1,0 +1,107 @@
+body {
+    padding-top: 50px;
+}
+ 
+#applyMapping
+{background-color: rgb(255,190,190);
+ border-color: rgb(255,190,190);
+}
+
+
+.sortButton{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.sortButton.sortSelected.asc {
+    padding-top:5px; 
+    padding-bottom: 25px;
+}
+
+
+.sortButton.sortSelected {
+    padding-top:25px; 
+    padding-bottom: 5px;
+}
+
+.scrollable{
+    overflow-y: auto;
+}
+
+.bordered {
+    border: 1px solid black;
+}
+
+.dropTiny {
+    padding-top: 10px;
+}
+
+.dropSmall {
+    padding-top: 20px;
+}
+
+.dropMedium {
+    padding-top: 40px
+}
+
+.dropLarge {
+    padding-top: 100px;
+}
+
+.dropExtraLarge {
+    padding-top: 250px;
+}
+
+div.heightContained {
+    height: 98%;
+}
+
+.tinyButton {
+    height: 15px;
+    display: none;
+}
+
+.tinyButton.visible {
+    display: inline;
+}
+ 
+hr {
+    height: 1px;
+    background: #000;
+    margin-bottom: 20px;
+}
+
+.transactionDetail{
+    border: 2px solid black   ;
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;                
+}
+
+.baChecking {
+    background-color: #77BEFB;
+    color: black;
+}
+
+.transSelected.baChecking {
+    background-color: #447AB7;
+    color: white;
+}
+
+.chaseCredit {
+    background-color: #ffe28a;
+    color: black;
+}
+
+.transSelected.chaseCredit{
+    background-color: #ca9900;
+    color: white;
+}
+
+
+.transDate {
+    padding:0 0 0 0;
+    font-size: 9pt;
+}
+

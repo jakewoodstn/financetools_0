@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Devart (www.devart.com), compare document file -->
+<!-- Modifying this generated file will probably render it invalid -->
+<CompareDocument>
+  <Properties>
+    <DatabaseProvider>aa8afe9c-7d62-4564-b477-c12e62e0f440</DatabaseProvider>
+    <ProviderVersion>4.0.35.0</ProviderVersion>
+    <SchemaVersion>1.5</SchemaVersion>
+  </Properties>
+  <Source Type="Database">
+    <DataConnection>Finances.local</DataConnection>
+    <ConnectionString>Data Source=(local);Initial Catalog=Finances;Integrated Security=True</ConnectionString>
+    <Category>00000000-0000-0000-0000-000000000000</Category>
+    <Schema>Finances</Schema>
+  </Source>
+  <Target Type="Database">
+    <DataConnection>s1</DataConnection>
+    <ConnectionString>Data Source=s1;Integrated Security=False;User ID=webuser</ConnectionString>
+    <Category>00000000-0000-0000-0000-000000000000</Category>
+    <Schema>Finances</Schema>
+  </Target>
+  <GroupType Value="Status" />
+  <Filter Value="0" />
+  <ComparisonOptions>
+    <UseSubSchemaNamePrefix>true</UseSubSchemaNamePrefix>
+    <IgnorePermissions>false</IgnorePermissions>
+    <IgnoreColumnOrderInIndexes>false</IgnoreColumnOrderInIndexes>
+    <IgnoreForeignKeys>false</IgnoreForeignKeys>
+    <CountColumnsToDropUK>true</CountColumnsToDropUK>
+    <ForceColumnOrder>true</ForceColumnOrder>
+    <IgnoreCase>false</IgnoreCase>
+    <IgnoreComments>false</IgnoreComments>
+    <IgnoreWhiteSpace>true</IgnoreWhiteSpace>
+    <CompareSecurityObjectPrivileges>false</CompareSecurityObjectPrivileges>
+    <IgnoreCollations>false</IgnoreCollations>
+    <IgnoreAuthorization>false</IgnoreAuthorization>
+    <IgnoreEventNotificationOnQueues>false</IgnoreEventNotificationOnQueues>
+    <IgnoreExtendedProperties>false</IgnoreExtendedProperties>
+    <IgnoreIndexes>false</IgnoreIndexes>
+    <IgnoreTriggerFireOrder>false</IgnoreTriggerFireOrder>
+    <IgnoreStatistics>false</IgnoreStatistics>
+    <IgnoreDMLTriggers>false</IgnoreDMLTriggers>
+    <IgnoreLogins>true</IgnoreLogins>
+    <IgnoreNotForReplication>false</IgnoreNotForReplication>
+    <IgnoreFullTextSearch>false</IgnoreFullTextSearch>
+    <IgnoreFullTextCatalogPath>false</IgnoreFullTextCatalogPath>
+    <IgnoreFilegroupsPartitionSchemes>false</IgnoreFilegroupsPartitionSchemes>
+    <IgnoreUserDefaultSchema>true</IgnoreUserDefaultSchema>
+    <PopulateFullTextIndexes>false</PopulateFullTextIndexes>
+    <CompareDatabaseProperties>true</CompareDatabaseProperties>
+    <IgnoreIndexesNames>false</IgnoreIndexesNames>
+    <IgnoreStatisticsNorecompute>false</IgnoreStatisticsNorecompute>
+    <IgnorePadIndexAndFillfactor>false</IgnorePadIndexAndFillfactor>
+    <IgnoreDataCompression>true</IgnoreDataCompression>
+    <IgnoreChangeTracking>false</IgnoreChangeTracking>
+    <IgnoreIndexColumnsSortOrder>false</IgnoreIndexColumnsSortOrder>
+    <IgnoreIndexPageAndRowLock>false</IgnoreIndexPageAndRowLock>
+    <QuoteObjectNames>false</QuoteObjectNames>
+    <IgnoreCheckConstraints>false</IgnoreCheckConstraints>
+    <IgnoreRules>false</IgnoreRules>
+    <IgnoreDefaultConstraints>false</IgnoreDefaultConstraints>
+    <IgnoreIdentitySeedIncrementValues>false</IgnoreIdentitySeedIncrementValues>
+    <IgnoreIdentity>false</IgnoreIdentity>
+    <IgnorePrimaryKeys>false</IgnorePrimaryKeys>
+    <IgnoreUniqueKeys>false</IgnoreUniqueKeys>
+    <IgnoreNocheck>false</IgnoreNocheck>
+    <DecryptEncryptedObjects>true</DecryptEncryptedObjects>
+    <IgnoreSignatures>false</IgnoreSignatures>
+    <IgnoreWithOptionOrder>true</IgnoreWithOptionOrder>
+    <IgnoreKeywordReduction>true</IgnoreKeywordReduction>
+    <IgnoreQuotedIdentifierAndANSINulls>false</IgnoreQuotedIdentifierAndANSINulls>
+    <CheckInconsistency>false</CheckInconsistency>
+    <SetDelimiter>true</SetDelimiter>
+    <UseDelimiter>true</UseDelimiter>
+    <TargetDatabaseName xml:space="preserve">Finances</TargetDatabaseName>
+    <TargetChangeTracking>false</TargetChangeTracking>
+    <IsTarget>false</IsTarget>
+    <OmitIgnoreOptions>false</OmitIgnoreOptions>
+    <IncludeFilesAndFilegroups>false</IncludeFilesAndFilegroups>
+    <IgnoreMemoryOptimizedProperty>false</IgnoreMemoryOptimizedProperty>
+    <IncludeSetNoExec>true</IncludeSetNoExec>
+    <IncludeUseDatabase>true</IncludeUseDatabase>
+    <CompareServerObjects>false</CompareServerObjects>
+    <IgnoreObjectTypeFilter>false</IgnoreObjectTypeFilter>
+    <IgnoreConstraintsNames>false</IgnoreConstraintsNames>
+  </ComparisonOptions>
+  <ObjectFilter>
+    <Include>Table</Include>
+    <Include>View</Include>
+    <Include>Procedure</Include>
+    <Include>Function</Include>
+    <Include>User</Include>
+    <Include>Role</Include>
+    <Include>ApplicationRole</Include>
+    <Include>Rule</Include>
+    <Include>Default</Include>
+    <Include>UserDefinedType</Include>
+    <Include>FullTextCatalog</Include>
+    <Include>BrokerPriority</Include>
+    <Include>FullTextStoplist</Include>
+    <Include>Assembly</Include>
+    <Include>AsymmetricKey</Include>
+    <Include>Certificate</Include>
+    <Include>Contract</Include>
+    <Include>DdlTrigger</Include>
+    <Include>EventNotification</Include>
+    <Include>MessageType</Include>
+    <Include>PartitionFunction</Include>
+    <Include>PartitionScheme</Include>
+    <Include>Queue</Include>
+    <Include>RemoteServiceBinding</Include>
+    <Include>Route</Include>
+    <Include>Schema</Include>
+    <Include>Service</Include>
+    <Include>SymmetricKey</Include>
+    <Include>Synonym</Include>
+    <Include>XmlSchemaCollection</Include>
+  </ObjectFilter>
+  <ModifiedObjects>
+    <Object Name="Finances:Finances" Type="Database" Include="False" Operation="None" />
+    <Object Name="dbo.test" Type="Table" Include="False" Operation="None" />
+    <Object Name="dbo.trace" Type="Table" Include="False" Operation="None" />
+    <Object Name="dbo.categorySummaryData" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.getData" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.parseParameters" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rAvgCat12R" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rAvgInc12R" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rCat12R" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rCat12RByMonth" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rCatDev" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rCatMTD" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rCatMTDJSON" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rCatYTD" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.renderJson" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.renderJson_categorySummary" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.renderJson_timeSummary" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.renderJson_transaction" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.rNetDelta12R" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.timeSummaryData" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.tproc" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.transactionRawData" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.TransactionSearchByDescriptionPattern" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.uncategorizedTransactions" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.uncategorizedTransactionsJSON" Type="Procedure" Include="False" Operation="None" />
+    <Object Name="dbo.timeframes" Type="Function" Include="False" Operation="None" />
+    <Object Name="fintools" Type="User" Include="False" Operation="None" />
+    <Object Name="webuser" Type="User" Include="False" Operation="None" />
+    <Object Name="dbo.categorySummary" Type="UserTableType" Include="False" Operation="None" />
+    <Object Name="dbo.jsonTable" Type="UserTableType" Include="False" Operation="None" />
+    <Object Name="dbo.timeSummary" Type="UserTableType" Include="False" Operation="None" />
+  </ModifiedObjects>
+  <SynchronizationOptions>
+    <PropertyValue Name="BackupDatabase">true</PropertyValue>
+    <PropertyValue Name="CreateBackupFolder">true</PropertyValue>
+    <PropertyValue Name="ExecuteAsSingleTransaction">true</PropertyValue>
+    <PropertyValue Name="GenerateScriptHeader">true</PropertyValue>
+    <PropertyValue Name="UseSchemaNamePrefix">false</PropertyValue>
+    <PropertyValue Name="UseSqlExtensionCommands">true</PropertyValue>
+    <PropertyValue Name="DisableDdlTriggers">false</PropertyValue>
+    <PropertyValue Name="VerifyTableData">false</PropertyValue>
+    <PropertyValue Name="AddWithNocheck">false</PropertyValue>
+    <PropertyValue Name="CommentDdlForKeysCertificates">true</PropertyValue>
+    <PropertyValue Name="SynchronizeAsmViaFiles">false</PropertyValue>
+    <PropertyValue Name="AssembliesStoragePath" xml:space="preserve" />
+    <PropertyValue Name="CheckObjectExistence">false</PropertyValue>
+    <PropertyValue Name="UseSchemaTransfer">false</PropertyValue>
+    <PropertyValue Name="RefreshViews">true</PropertyValue>
+    <PropertyValue Name="ExcludeDependencies">false</PropertyValue>
+    <PropertyValue Name="SynchronizeType">0</PropertyValue>
+    <PropertyValue Name="SynchronizationFileName" xml:space="preserve">\\psf\Home\Desktop\Finances ((local) vs s1)_20141210-1556.sql</PropertyValue>
+    <PropertyValue Name="SynchronizationEditorFileName" xml:space="preserve">C:\Users\jakewoods\AppData\Local\Temp\Devart_0aieagme.z2j\sync.sql</PropertyValue>
+    <PropertyValue Name="OpenScriptInEditor">false</PropertyValue>
+    <PropertyValue Name="RefreshAfterSynchronization">false</PropertyValue>
+    <PropertyValue Name="CommitToVersionControl">false</PropertyValue>
+    <PropertyValue Name="CommentString" xml:space="preserve" />
+    <PropertyValue Name="IncludePrintComments">false</PropertyValue>
+    <PropertyValue Name="ExcludeComments">false</PropertyValue>
+    <PropertyValue Name="PureScript">false</PropertyValue>
+    <PropertyValue Name="IsPartOfScript">false</PropertyValue>
+    <PropertyValue Name="BackupPathName" xml:space="preserve">C:\MSSQL\Bkup</PropertyValue>
+    <PropertyValue Name="IgnoreEncryptionProperty">false</PropertyValue>
+    <PropertyValue Name="UseCommitMode">false</PropertyValue>
+    <PropertyValue Name="CommitPageLength" xml:space="preserve">200</PropertyValue>
+  </SynchronizationOptions>
+  <Mapping ExcludeUnmappedSchemas="False">
+    <Schemas>
+      <Object SourceName="dbo" TargetName="dbo" State="DefaultMapped" Included="True" />
+      <Object SourceName="guest" TargetName="guest" State="DefaultMapped" Included="True" />
+    </Schemas>
+    <ComparedObjects>
+      <Object SourceName="dbo.account" TargetName="dbo.account" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.aspnet_Applications" TargetName="dbo.aspnet_Applications" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.aspnet_Membership" TargetName="dbo.aspnet_Membership" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.aspnet_Roles" TargetName="dbo.aspnet_Roles" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.aspnet_SchemaVersions" TargetName="dbo.aspnet_SchemaVersions" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.aspnet_Users" TargetName="dbo.aspnet_Users" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.aspnet_UsersInRoles" TargetName="dbo.aspnet_UsersInRoles" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.bankTransaction" TargetName="dbo.bankTransaction" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.bankTransactionLoad" TargetName="dbo.bankTransactionLoad" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.bankTransactionLoadHx" TargetName="dbo.bankTransactionLoadHx" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.categorySplitDetails" TargetName="dbo.categorySplitDetails" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.DailyBalance" TargetName="dbo.DailyBalance" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.DimDate" TargetName="dbo.DimDate" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.Note" TargetName="dbo.Note" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.parameter" TargetName="dbo.parameter" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.spendingCategories" TargetName="dbo.spendingCategories" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.spendingCategoryGroup" TargetName="dbo.spendingCategoryGroup" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.sysdiagrams" TargetName="dbo.sysdiagrams" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.taggedEvent" TargetName="dbo.taggedEvent" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.transactionAccount" TargetName="dbo.transactionAccount" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.transactions" TargetName="dbo.transactions" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.transactionTaggedEvent" TargetName="dbo.transactionTaggedEvent" SourceType="Table" TargetType="Table" State="Different" />
+      <Object SourceName="dbo.[User]" TargetName="dbo.[User]" SourceType="Table" TargetType="Table" State="Different" />
+    </ComparedObjects>
+  </Mapping>
+</CompareDocument>

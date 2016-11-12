@@ -1,0 +1,22 @@
+﻿   function renderSelector(idValue){
+            var selector='<select id="'+idValue+'">\r\n<option id="optDefault" value="0">...</option>\r\n'
+        
+                    @{  
+                        var db = Database.Open("Finances");
+                        var grpRs=db.Query("select distinct groupName from vSpendingCategories inner join spendingCategoryGroup on vSpendingCategories.groupid=spendingCategoryGroup.groupID where groupName in ('Expenses','Income') order by groupName");
+
+                        var resStr="";
+                        foreach(var r in grpRs){                
+                            resStr=resStr+Html.Raw("<optgroup label=\""+r.groupname+"\">");
+                            var catRs = db.Query("select vSpendingCategories.categoryid,vSpendingCategories.categoryName from vSpendingCategories inner join spendingCategoryGroup on vSpendingCategories.groupid=spendingCategoryGroup.groupID where groupName =@0 order by categoryName ",r.groupname);
+                            foreach (var rr in catRs){
+                                 resStr = resStr +"<option id=\""+rr.categoryName+"\" value=\""+rr.categoryid+"\">"+rr.categoryName+"</option>";
+                            }
+                        }
+                        resStr=resStr+"</optgroup>";
+                    }
+        
+        selector = selector + '@Html.Raw(resStr)'+ '</select>';
+        return selector;
+        }
+        

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Devart (www.devart.com), compare document file -->
+<!-- Modifying this generated file will probably render it invalid -->
+<CompareDocument>
+  <Properties>
+    <DatabaseProvider>aa8afe9c-7d62-4564-b477-c12e62e0f440</DatabaseProvider>
+    <ProviderVersion>4.0.35.0</ProviderVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </Properties>
+  <Source Type="Database">
+    <DataConnection>Finances.local</DataConnection>
+    <ConnectionString>Data Source=(local);Initial Catalog=Finances;Integrated Security=True</ConnectionString>
+    <Category>00000000-0000-0000-0000-000000000000</Category>
+    <Schema>Finances</Schema>
+  </Source>
+  <Target Type="Database">
+    <DataConnection>s1</DataConnection>
+    <ConnectionString>Data Source=s1;Integrated Security=False;User ID=webuser</ConnectionString>
+    <Category>00000000-0000-0000-0000-000000000000</Category>
+    <Schema>Finances</Schema>
+  </Target>
+  <Filter Value="0" />
+  <HideUnmodifiedColumns>False</HideUnmodifiedColumns>
+  <Options>
+    <PropertyValue Name="MappingIgnoreSpaces">true</PropertyValue>
+    <PropertyValue Name="IgnoreBlobColumns">false</PropertyValue>
+    <PropertyValue Name="HideSystemSchemas">false</PropertyValue>
+    <PropertyValue Name="IgnoreTimestampColumns">false</PropertyValue>
+    <PropertyValue Name="IgnoreRowguidColumns">false</PropertyValue>
+    <PropertyValue Name="IgnoreIdentityColumns">false</PropertyValue>
+    <PropertyValue Name="CompareClrTypesAsBinary">false</PropertyValue>
+    <PropertyValue Name="IgnoreComputedColumns">true</PropertyValue>
+    <PropertyValue Name="MappingIgnoreCase">false</PropertyValue>
+    <PropertyValue Name="MappingIgnoreUnderscores">false</PropertyValue>
+    <PropertyValue Name="IgnoreColumnsByMask">false</PropertyValue>
+    <PropertyValue Name="MappingColumnsMask" xml:space="preserve">*ModifiedDate*,*CreatedOn*,*UpdatedBy*</PropertyValue>
+    <PropertyValue Name="ExcludeObjectsByMask">false</PropertyValue>
+    <PropertyValue Name="ExcludeObjectsMask" xml:space="preserve">*Table*</PropertyValue>
+    <PropertyValue Name="IncludeObjectsByMask">false</PropertyValue>
+    <PropertyValue Name="IncludeObjectsMask" xml:space="preserve">*</PropertyValue>
+    <PropertyValue Name="CompareTables">true</PropertyValue>
+    <PropertyValue Name="CompareViews">false</PropertyValue>
+    <PropertyValue Name="RoundFloatTypes">false</PropertyValue>
+    <PropertyValue Name="RoundFloatTypesUpTo" xml:space="preserve">3</PropertyValue>
+    <PropertyValue Name="IgnoreTrailingSpaces">false</PropertyValue>
+    <PropertyValue Name="IgnoreCase">false</PropertyValue>
+    <PropertyValue Name="IgnoreEndOfLine">false</PropertyValue>
+    <PropertyValue Name="IsEmptyStringEqualsNull">false</PropertyValue>
+    <PropertyValue Name="IsIgnoreTime">false</PropertyValue>
+    <PropertyValue Name="CheckDifferent">true</PropertyValue>
+    <PropertyValue Name="CheckOnlyInSource">true</PropertyValue>
+    <PropertyValue Name="CheckOnlyInTarget">true</PropertyValue>
+    <PropertyValue Name="CheckIdentical">true</PropertyValue>
+  </Options>
+  <ModifiedObjects />
+  <SynchronizationOptions>
+    <PropertyValue Name="UseSchemaNamePrefix">true</PropertyValue>
+    <PropertyValue Name="CreateBackupFolder">true</PropertyValue>
+    <PropertyValue Name="DisableForeignKeys">true</PropertyValue>
+    <PropertyValue Name="DropKeys">false</PropertyValue>
+    <PropertyValue Name="DropCheckConstraints">false</PropertyValue>
+    <PropertyValue Name="DisableDmlTriggers">true</PropertyValue>
+    <PropertyValue Name="BulkInsert">false</PropertyValue>
+    <PropertyValue Name="BackupDatabase">true</PropertyValue>
+    <PropertyValue Name="ExecuteAsSingleTransaction">true</PropertyValue>
+    <PropertyValue Name="GenerateScriptHeader">true</PropertyValue>
+    <PropertyValue Name="UseSqlExtensionCommands">true</PropertyValue>
+    <PropertyValue Name="ReseedIdentityColumns">true</PropertyValue>
+    <PropertyValue Name="UseExec">true</PropertyValue>
+    <PropertyValue Name="RestoreConstraintsWithCheck">false</PropertyValue>
+    <PropertyValue Name="DisableDdlTriggers">false</PropertyValue>
+    <PropertyValue Name="SynchronizeViaFiles">false</PropertyValue>
+    <PropertyValue Name="CheckConcurrencyUpdates">false</PropertyValue>
+    <PropertyValue Name="SynchronizeType">0</PropertyValue>
+    <PropertyValue Name="SynchronizationFileName" xml:space="preserve">C:\FinanceTools\dbSnapshots\Finances ((local) vs s1)_20141210-1600.sql</PropertyValue>
+    <PropertyValue Name="SynchronizationEditorFileName" xml:space="preserve" />
+    <PropertyValue Name="OpenScriptInEditor">false</PropertyValue>
+    <PropertyValue Name="RefreshAfterSynchronization">false</PropertyValue>
+    <PropertyValue Name="CommitToVersionControl">false</PropertyValue>
+    <PropertyValue Name="CommentString" xml:space="preserve" />
+    <PropertyValue Name="IncludePrintComments">false</PropertyValue>
+    <PropertyValue Name="ExcludeComments">false</PropertyValue>
+    <PropertyValue Name="PureScript">false</PropertyValue>
+    <PropertyValue Name="IsPartOfScript">false</PropertyValue>
+    <PropertyValue Name="BackupPathName" xml:space="preserve">C:\MSSQL\Bkup</PropertyValue>
+    <PropertyValue Name="IgnoreEncryptionProperty">false</PropertyValue>
+    <PropertyValue Name="UseCommitMode">false</PropertyValue>
+    <PropertyValue Name="CommitPageLength" xml:space="preserve">200</PropertyValue>
+  </SynchronizationOptions>
+  <Mapping>
+    <Schemas>
+      <Object SourceName="dbo" TargetName="dbo" State="DefaultMapped" Included="True" />
+      <Object SourceName="guest" TargetName="guest" State="DefaultMapped" Included="True" />
+      <Object SourceName="monitoring" TargetName="monitoring" State="DefaultMapped" Included="True" />
+      <Object SourceName="reporting" TargetName="reporting" State="DefaultMapped" Included="True" />
+    </Schemas>
+    <ComparedObjects>
+      <Object SourceName="dbo.account" TargetName="dbo.account" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.aspnet_Applications" TargetName="dbo.aspnet_Applications" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.aspnet_Membership" TargetName="dbo.aspnet_Membership" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.aspnet_Roles" TargetName="dbo.aspnet_Roles" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.aspnet_SchemaVersions" TargetName="dbo.aspnet_SchemaVersions" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.aspnet_Users" TargetName="dbo.aspnet_Users" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.aspnet_UsersInRoles" TargetName="dbo.aspnet_UsersInRoles" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.bankTransaction" TargetName="dbo.bankTransaction" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.bankTransactionLoad" TargetName="dbo.bankTransactionLoad" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.bankTransactionLoadHx" TargetName="dbo.bankTransactionLoadHx" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.categorySplitDetails" TargetName="dbo.categorySplitDetails" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.DailyBalance" TargetName="dbo.DailyBalance" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.DimDate" TargetName="dbo.DimDate" SourceType="Table" TargetType="Table" />
+      <Object SourceName="dbo.Note" TargetName="dbo.Note" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.parameter" TargetName="dbo.parameter" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.spendingCategories" TargetName="dbo.spendingCategories" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.spendingCategoryGroup" TargetName="dbo.spendingCategoryGroup" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.sysdiagrams" TargetName="dbo.sysdiagrams" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.taggedEvent" TargetName="dbo.taggedEvent" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.transactionAccount" TargetName="dbo.transactionAccount" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.transactions" TargetName="dbo.transactions" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.transactionTaggedEvent" TargetName="dbo.transactionTaggedEvent" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="dbo.[User]" TargetName="dbo.[User]" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="monitoring.dynamicSqlMonitor" TargetName="monitoring.dynamicSqlMonitor" SourceType="Table" TargetType="Table" Included="False" IncludedInScript="False" />
+      <Object SourceName="reporting.domain" TargetName="reporting.domain" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.metric" TargetName="reporting.metric" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.operator" TargetName="reporting.operator" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.ordering" TargetName="reporting.ordering" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.orderingDetail" TargetName="reporting.orderingDetail" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.period" TargetName="reporting.period" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.snippet" TargetName="reporting.snippet" SourceType="Table" TargetType="Table" />
+      <Object SourceName="reporting.timeDensityDetail" TargetName="reporting.timeDensityDetail" SourceType="Table" TargetType="Table" />
+    </ComparedObjects>
+  </Mapping>
+</CompareDocument>

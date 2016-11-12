@@ -1,0 +1,137 @@
+﻿@{
+      Layout="~/Content/shared/_entryLayout.cshtml";
+      int buttonCount=24;
+      int buttonPerRow=4;
+      var db = Database.Open("Finances");
+      var grpRs=db.Query("select distinct groupName from vSpendingCategories inner join spendingCategoryGroup on vSpendingCategories.groupid=spendingCategoryGroup.groupID where groupName in ('Expenses','Income','Savings','Investments') order by groupName");
+
+}
+@section scripts{
+
+    <script type="text/javascript" src="/Scripts/finToolsScripts/catSelector.cshtml"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/split.js"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/sort.js"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/search.js"></script>
+    <script type="text/javascript" src="/Scripts/finToolsScripts/transtable.js"></script>
+
+    <script type="text/javascript">
+        var numTopCat = 24;
+        var durTopCat = 365;
+        
+        function init() {
+            $("#loadingDiv").toggle(true);
+            fetchData(renderTrans);
+            getButtons(renderButtons);
+            $('#sortDiv input').click(function () {
+                    $('#buttonPanel').hide();
+                    changeSort(this, renderTrans);
+                    getButtons(renderButtons);
+                });
+            $("#searchPanel").click(function () {
+                $('.shiftedLeft').animate({right: '-=250'}, 2000);
+                $('.shiftedRight').animate({right: '+=250'}, 2000);
+                $('.shiftable').toggleClass('shiftedLeft');
+                $('.shiftable').toggleClass('shiftedRight');
+            });
+            
+        
+        }
+        
+        $(document).ready(init);
+        
+    </script>
+}
+<div id="splitPanel">
+    <div id="splitPanelHeader"><h4>Split Transaction Detail</h4></div>
+    <div id="splitPanelBody">
+        <table style="width:100% ;" id="splitDetailTable">
+            <thead>
+            <tr id="splitDetailHeader">
+                <th style="width: 70%;padding-left: 10px">Category:</th>
+                <th style="width: 25%">Amount</th>
+                <th style="width: 5%;"></th>
+            </tr></thead>
+        </table>
+
+        <span class="splitPanelButton" onclick="addSplit();"><img alt="Add Split" src="~/Images/blueplus.png" />Add Split</span>
+        <br />
+        <span style="font-size: 0.8em">
+        Total Assigned: <span id="splitAssigned">$0.00</span> Transaction Total: <span id="splitTotal"></span>
+        </span>
+        <br />
+        <span id="splitRemaining" style="font-size: 0.8em;">Remaining: <span style="display: inherit">$0.00</span> </span>
+
+    </div>
+    <div id="splitPanelFooter">
+        <input id="splitLineCount" type="hidden" value="-1" />
+        <input id="splitCancButton" class="splitPanelButton" type="button" value="Cancel" onclick="$('#splitPanel').toggle(false);" />
+        <input id="splitSaveButton" class="splitPanelButton" type="button" value="Save" onclick="saveSplit()" />
+    </div>
+</div>
+<div id="loadingDiv">Loading...</div>
+<div id="noRecordsDiv">No Records Found.</div>
+<div id="transactionsDiv">
+    <table id="transactions"></table>
+</div>
+<div id="sortDiv">
+    <h3>sort:</h3>
+    <input type="button" id="sortDate" class="sortButton sortSelected" value="Date" /></br>
+    <input type="button" id="sortDesc" class="sortButton " value="Payee" /></br>
+    <input type="button" id="sortCat" class="sortButton" value="Category" /></br>
+    <input type="button" id="sortAmt" class="sortButton" value="$" /></br>
+</div>
+
+<div id="searchDiv">
+    <h3>search:</h3>
+    <input type="text" id="searcher"/><br/>
+    <span id="searchIncludeAllLabel"><input type="checkbox" id="searchIncludeAll"/>Include All</span><br/>
+    <input type="button" id="search" class="searchButton" value="Search" /></br>
+    <input type="button" id="clearSearch" class="searchButton" value="Clear Search" /></br>
+    <select id="accountSearch" class="searchButton">
+    <option selected accountId="0">All Accounts</option>
+    <option accountId="1">BA Checking</option>
+    <option accountId="2">Chase Credit</option>
+    </select>
+</div>
+
+<div id="buttonPanel">
+    @for(int i=0;i < buttonCount;i++){
+        <div class="catButtonDiv">
+            <img class="catButton" alt="push" src="~/Images/bluebutton.png" id="@("catButton" + i.ToString())" />
+            <span class="catLabel" id="@("catLabel" + i.ToString())"></span>
+        </div>
+        @(i%buttonPerRow==buttonPerRow-1?Html.Raw("<br/>"):Html.Raw(""))
+    }
+    <div class="horiz-spacer"></div>
+    <div class="horiz-spacer"></div>
+    <div class="horiz-spacer"></div>
+    <div class="horiz-spacer"></div>
+    <br />
+    <span id="selectAnySpan">
+        <select id="selectAny">
+            <option id="optDefault" value="0">...</option>
+            @foreach(var r in grpRs){
+                <optgroup label="@r.groupname">
+                    @{
+                        var catRs = db.Query("select vSpendingCategories.categoryid,vSpendingCategories.categoryName from vSpendingCategories inner join spendingCategoryGroup on vSpendingCategories.groupid=spendingCategoryGroup.groupID where groupName =@0 order by categoryName ",r.groupname);
+                        foreach (var rr in catRs){
+                        <option id="@rr.categoryName" value="@rr.categoryid">@rr.categoryName</option>
+                    }
+                }
+         </optgroup>}
+        </select>
+        <input id="assignButton" type="button" value="Assign" onclick="assign(this,-1);" /><br />
+
+    </span>    <div class="horiz-spacer"></div>
+    <div class="horiz-spacer"></div>
+    <div class="horiz-spacer"></div>
+    <div class="horiz-spacer"></div>
+    <br />
+    <span id="approveSpan">        <input id="approveButton" type="button" value="Approve Categories" onclick="approve();" /><br />
+        <input id="multiDescription" type="text"></input><br/>
+        <input id="saveMultipleButton" type="button" value="Save Multiple" onclick="saveMultiple();" /><br />
+    </span>
+    <span id="recordCount"></span>
+
+</div>
+<div class="shiftable shiftedRight" id="searchPanel"></div>

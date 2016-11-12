@@ -1,0 +1,7 @@
+.AppleDouble
+*.suo
+OldGui
+FinanceToolsDB
+*.tmp
+FinanceTools/packages/*
+FinanceTools/bin/*

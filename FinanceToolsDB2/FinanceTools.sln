@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "FinanceSSIS", "FinanceSSIS\FinanceSSIS.dtproj", "{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://s0:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FinanceSSIS\\FinanceSSIS.dtproj
+		SccProjectName1 = FinanceSSIS
+		SccLocalPath1 = FinanceSSIS
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Development|Default = Development|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.Debug|Default.ActiveCfg = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.Debug|Default.Build.0 = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.DebugLocal|Default.ActiveCfg = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.DebugLocal|Default.Build.0 = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.Development|Default.ActiveCfg = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.Development|Default.Build.0 = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.Release|Default.ActiveCfg = Development
+		{C1EB446A-CC24-485E-BD84-CDBCC8ABD5C0}.Release|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
